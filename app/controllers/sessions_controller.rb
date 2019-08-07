@@ -3,15 +3,31 @@ class SessionsController < ApplicationController
     end
 
     def create
-        @user = User.find_or_create_by(uid: auth['uid']) do |u|
-            u.name = auth['info']['name']
-            u.email = auth['info']['email']
-            u.image = auth['info']['image']
+        if auth
+            @user = User.find_or_create_from_auth_hash(auth)
+            session[:user_id] = @user.id
+
+            redirect_to '/'
+        else
+            user = User.find(params[:user][:email])
+            
+            if user && user.authenticate(params[:password])
+                log_in(user)
+
+
+                redirect_to user_path(user)
+            else
+                flash[:notice] = "Invalid email and/or password"
+                
+                redirect_to new_session_path
+            end
         end
+    end
 
-        session[:user_id] = @user.try(:id)
+    def destroy
+        session.delete(:user_id)
 
-        render 'welcome#home'
+        redirect_to root_path
     end
 
     private

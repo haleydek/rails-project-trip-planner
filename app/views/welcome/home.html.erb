@@ -1,9 +1,13 @@
-<% if current_user %>
-    <h1>current_user.name</h1>
-    <p>current_user.email</p>
-    <img src="<%= current_user.image if current_user.image %>">
+<% if session[:user_id] %>
+    <h1><%= @user.name %></h1>
+    <p><%= @user.email %></p>
+    <img src="<%= @user.image if @user.image %>" width="100" height="100">
+
+    <br><br>
+
+    <%= link_to "Log Out", logout_path, method: "delete" %>
 <% else %>
     <h1>Group Trip Planner</h1>
-    <link_to "Log In with Facebook", '/auth/facebook', method: :post>
+    <%= link_to("Log In with Facebook", '/auth/facebook', method: :post) %>
 <% end %>
 
