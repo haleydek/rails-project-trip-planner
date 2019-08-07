@@ -4,6 +4,6 @@
     <img src="<%= current_user.image if current_user.image %>">
 <% else %>
     <h1>Group Trip Planner</h1>
-    <a href='/auth/facebook'>Log In with Facebook</a>
+    <link_to "Log In with Facebook", '/auth/facebook', method: :post>
 <% end %>
 
