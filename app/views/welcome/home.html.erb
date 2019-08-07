@@ -1,7 +1,9 @@
 <% if session[:user_id] %>
     <h1><%= @user.name %></h1>
     <p><%= @user.email %></p>
-    <img src="<%= @user.image if @user.image %>" width="100" height="100">
+    <% if @user.image.present? %>
+        <img src="<%= @user.image %>" width="100" height="100">
+    <% end %>
 
     <br><br>
 
@@ -10,4 +12,3 @@
     <h1>Group Trip Planner</h1>
     <%= link_to("Log In with Facebook", '/auth/facebook', method: :post) %>
 <% end %>
-

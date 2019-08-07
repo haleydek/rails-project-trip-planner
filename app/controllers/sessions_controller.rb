@@ -9,8 +9,9 @@ class SessionsController < ApplicationController
 
             redirect_to :root
         else
-            user = User.find(params[:user][:email])
+            user = User.find(params[:email])
             
+            # Authenticate -- check if user was found by email & if password is correct
             if user && user.authenticate(params[:password])
                 log_in(user)
 

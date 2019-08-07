@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+    validates :name, presence: true
+    validates :email, presence: true, uniqueness: { case_sensitive: false, message: "Sorry, this email is already associated with an account." }
+
     has_secure_password
 
     def self.find_or_create_from_auth_hash(auth)
