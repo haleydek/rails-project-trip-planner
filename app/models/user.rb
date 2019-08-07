@@ -1,6 +1,6 @@
 class User < ApplicationRecord
     validates :name, presence: true
-    validates :email, presence: true, uniqueness: { case_sensitive: false, message: "Sorry, this email is already associated with an account." }
+    validates :email, presence: true, uniqueness: { case_sensitive: false }
 
     has_secure_password
 

@@ -6,14 +6,14 @@ class UsersController < ApplicationController
     end
 
     def create
-        user = User.new(user_params)
-        if user.save!
+        @user = User.new(user_params)
+        if @user.valid?
+            @user.save!
             log_in user
 
             redirect_to :root
         else
-            #flash errors in view
-            redirect_to signup_path
+            render :new
         end
     end
 

@@ -1,12 +1,21 @@
 <h1>Sign Up</h1>
 
-<%= form_for @user do |f| %>
+<%= form_for @user, url: signup_path do |f| %>
+    <% if @user.errors.any?%>
+        <div id="error_explanation">
+            <p><%= @user.errors.full_messages.join(". ")%></p>
+        </div>
+    <% end %>
+
+    <div class="field<%= " field_with_errors" if @user.errors[:name].any? %>">
     <%= f.label :name %>
     <%= f.text_field :name %><br><br>
 
+    <div class="field<%= " field_with_errors" if @user.errors[:email].any? %>">
     <%= f.label :email %>
     <%= f.text_field :email %><br><br>
 
+    <div class="field<%= " field_with_errors" if @user.errors[:password].any? %>">
     <%= f.label :password %>
     <%= f.password_field :password %><br><br>
 
