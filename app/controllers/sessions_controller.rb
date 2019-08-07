@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
             @user = User.find_or_create_from_auth_hash(auth)
             session[:user_id] = @user.id
 
-            redirect_to '/'
+            redirect_to :root
         else
             user = User.find(params[:user][:email])
             
@@ -15,11 +15,11 @@ class SessionsController < ApplicationController
                 log_in(user)
 
 
-                redirect_to user_path(user)
+                redirect_to :root
             else
                 flash[:notice] = "Invalid email and/or password"
                 
-                redirect_to new_session_path
+                redirect_to login_path
             end
         end
     end
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
     def destroy
         session.delete(:user_id)
 
-        redirect_to root_path
+        redirect_to :root
     end
 
     private
