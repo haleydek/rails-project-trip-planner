@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
 
                 redirect_to :root
             else
-                flash[:notice] = "Invalid email and/or password"
+                flash[:errors] = "Invalid email and/or password."
                 
                 redirect_to login_path
             end
@@ -27,6 +27,8 @@ class SessionsController < ApplicationController
 
     def destroy
         session.delete(:user_id)
+
+        flash[:success] = "Successfully logged out."
 
         redirect_to :root
     end

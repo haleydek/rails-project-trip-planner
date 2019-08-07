@@ -7,3 +7,7 @@
 
     <%= submit_tag "Log In" %>
 <% end %>
+
+<br><br>
+
+<%= flash[:errors] if flash[:errors].present? %>

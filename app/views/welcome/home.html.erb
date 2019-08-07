@@ -11,4 +11,8 @@
 <% else %>
     <h1>Group Trip Planner</h1>
     <%= link_to("Log In with Facebook", '/auth/facebook', method: :post) %>
+    
+    <br><br>
+    
+    <%= flash[:success] if flash[:success].present? %>
 <% end %>
