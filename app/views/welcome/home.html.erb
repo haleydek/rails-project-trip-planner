@@ -1,4 +1,8 @@
 <% if current_user %>
+    <h1>current_user.name</h1>
+    <p>current_user.email</p>
+    <img src="<%= current_user.image if current_user.image %>">
+<% else %>
     <h1>Group Trip Planner</h1>
     <a href='/auth/facebook'>Log In with Facebook</a>
 <% end %>
