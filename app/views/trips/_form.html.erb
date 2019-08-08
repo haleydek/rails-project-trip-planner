@@ -1,0 +1,12 @@
+<%= form_for @trip do |f| %>
+    <%= f.label :title %>
+    <%= f.text_field :title %><br><br>
+
+    <%= f.label :start_date %>
+    <%= f.date_field :start_date %><br><br>
+
+    <%= f.label :end_date %>
+    <%= f.date_field :end_date %><br><br>
+
+    <%= f.submit %>
+<% end %>
