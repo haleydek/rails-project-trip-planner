@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_08_003847) do
+ActiveRecord::Schema.define(version: 2019_08_08_205711) do
 
   create_table "destinations", force: :cascade do |t|
     t.string "city"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2019_08_08_003847) do
   create_table "users_trips", force: :cascade do |t|
     t.integer "user_id"
     t.integer "trip_id"
-    t.boolean "trip_admin", default: false
+    t.boolean "trip_admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
