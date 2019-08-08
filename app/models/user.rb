@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+    has_many :userstrips
+    has_many :trips, through: :userstrips
+
     validates :name, presence: true
     validates :email, presence: true, uniqueness: { case_sensitive: false }
 
