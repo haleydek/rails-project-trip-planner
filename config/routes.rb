@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :destinations
   root 'welcome#home'
 
   resources :users, only: [:show, :index]
