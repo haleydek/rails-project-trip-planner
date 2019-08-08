@@ -1,12 +1,24 @@
 <%= form_for @trip do |f| %>
-    <%= f.label :title %>
-    <%= f.text_field :title %><br><br>
+    <% if @trip.errors.any? %>
+        <div id="error_explanation">
+            <%= @trip.errors.full_messages.join(". ") %>
+        </div>
+    <% end %>
 
-    <%= f.label :start_date %>
-    <%= f.date_field :start_date %><br><br>
+    <div class="field<%= ' field_with_errors' if @trip.errors[:title].any? %>">
+        <%= f.label :title %>
+        <%= f.text_field :title %>
+    </div><br><br>
 
-    <%= f.label :end_date %>
-    <%= f.date_field :end_date %><br><br>
+    <div class="field<%= ' field_with_errors' if @trip.errors[:start_date].any? %>">
+        <%= f.label :start_date %>
+        <%= f.date_field :start_date %>
+    </div><br><br>
+
+    <div class="field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
+        <%= f.label :end_date %>
+        <%= f.date_field :end_date %>
+    </div><br><br>
 
     <%= f.submit %>
 <% end %>
