@@ -1,10 +1,16 @@
 class TripsController < ApplicationController
     def new
-        @trip = Trip.new
+        if params[:user_id].to_i == session[:user_id] && User.exists?(params[:user_id])
+            @trip = Trip.new
+        else
+            flash[:errors] = "Cannot create a trip for an invalid user."
+
+            redirect_to :root
+        end
     end
 
     def create
-        @trip = Trip.new(trip_params)
+        @trip = current_user.trips.build(trip_params)
         if @trip.valid?
             @trip.save!
 
@@ -43,6 +49,6 @@ class TripsController < ApplicationController
     private
 
     def trip_params
-        params.require(:trip).permit(:title, :start_date, :end_date)
+        params.require(:trip).permit(:title, :start_date, :end_date, :user_id)
     end
 end

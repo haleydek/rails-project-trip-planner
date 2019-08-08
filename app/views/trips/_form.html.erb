@@ -5,6 +5,8 @@
         </div>
     <% end %>
 
+    <%= f.hidden_field :user_id %>
+
     <div class="field<%= ' field_with_errors' if @trip.errors[:title].any? %>">
         <%= f.label :title %>
         <%= f.text_field :title %>
