@@ -1,15 +1,21 @@
 <h1>Log In</h1>
 
 <%= form_tag('/login') do %>
-    <%= label_tag :email %>
-    <%= text_field_tag :email %><br><br>
+    <% if flash[:errors].present? %>
+        <div id="error_explanation">
+            <%= flash[:errors] %>
+        </div>
+    <% end %>
 
-    <%= label_tag :password %>
-    <%= password_field_tag :password %><br><br>
+    <div class="field<%= ' field_with_errors' if flash[:errors].present? %>">
+        <%= label_tag :email %>
+        <%= text_field_tag :email %>
+    </div><br><br>
+
+    <div class="field<%= ' field_with_errors' if flash[:errors].present? %>">
+        <%= label_tag :password %>
+        <%= password_field_tag :password %>
+    </div><br><br>
 
     <%= submit_tag "Log In" %>
 <% end %>
-
-<br><br>
-
-<%= flash[:errors] if flash[:errors].present? %>
