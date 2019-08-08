@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
-  resources :trips
-  resources :destinations
   root 'welcome#home'
+
+  resources :users do
+    resources :trips
+  end
+
+  resources :trips do
+    resources :destinations
+  end
 
   resources :users, only: [:show, :index]
 
