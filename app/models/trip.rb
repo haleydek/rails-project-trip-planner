@@ -12,4 +12,12 @@ class Trip < ApplicationRecord
     def self.invited_trips(user)
         self.where(id: (UsersTrip.where(user_id: user.id, trip_admin: false)).pluck(:trip_id))
     end
+
+    def start_date_format
+        self.start_date.strftime("%a, %B #{start_date.day.ordinalize}")
+    end
+
+    def end_date_format
+        self.end_date.strftime("%a, %B #{end_date.day.ordinalize}, %Y")
+    end
 end
