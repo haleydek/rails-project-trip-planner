@@ -20,4 +20,9 @@ class Trip < ApplicationRecord
     def end_date_format
         self.end_date.strftime("%a, %B #{end_date.day.ordinalize}, %Y")
     end
+
+    def current_user_is_trip_admin?(user)
+        trip_admins = self.users.where(id: (UsersTrip.where(trip_id: self.id, trip_admin: true)).pluck(:user_id))
+        trip_admins.ids.include?(user.id)
+    end
 end

@@ -1,3 +1,9 @@
 <h1><%= @trip.title %></h1>
 
-<p><strong>Dates: </strong><%= @trip.start_date_format %> - <%= @trip.end_date_format %></p>
+<%= flash[:errors] if flash[:errors].present? %>
+
+<p><strong>Dates: </strong><%= @trip.start_date_format %> - <%= @trip.end_date_format %></p><br><br>
+
+<%= link_to "Edit Trip", edit_user_trip_path(@user, @trip) if @trip.current_user_is_trip_admin?(@user) %><br><br>
+
+<%= link_to "Delete Trip", user_trip_path(@user, @trip), method: "delete" if @trip.current_user_is_trip_admin?(@user) %>

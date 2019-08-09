@@ -1,6 +1,7 @@
 class TripsController < ApplicationController
     before_action :authentication_required
     before_action :find_user, only: [:new, :edit, :show]
+    before_action :find_trip, only: [:edit, :update, :show, :destroy]
 
     def new
         if @user
@@ -27,30 +28,36 @@ class TripsController < ApplicationController
     end
 
     def edit
-        #Must validate trip.users includes current_user
-        #Must validate current_user is a trip_admin
-        @trip = Trip.find(params[:id])
+        if @trip.current_user_is_trip_admin?(@user)
+            render :edit
+        else
+            flash[:errors] = "You do not have permission to edit this trip."
+
+            redirect_to user_trip_path(@user, @trip)
+        end
     end
 
     def update
-        #Must validate trip.users includes current_user
-        #Must validate current_user is a trip_admin
-        @trip = Trip.find(params[:id])
-        if @trip.update
-            redirect_to trip_path(@trip)
+        #update does not change trip_admin value in users_trips table
+        if @trip.update(trip_params)
+            redirect_to user_trip_path(current_user, @trip)
         else
             render :edit
         end
     end
 
     def destroy
+        @trip.destroy
+
+        flash[:notice] = "Trip was successfully deleted."
+
+        redirect_to user_path(current_user)
     end
 
     def index
     end
 
     def show
-        @trip = Trip.find(params[:id])
         if @trip.users.include?(@user)
             render :show
         else
@@ -68,5 +75,9 @@ class TripsController < ApplicationController
 
     def find_user
         @user = User.find_by(id: params[:user_id])
+    end
+
+    def find_trip
+        @trip = Trip.find_by(id: params[:id])
     end
 end
