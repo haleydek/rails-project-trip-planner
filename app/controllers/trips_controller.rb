@@ -1,4 +1,5 @@
 class TripsController < ApplicationController
+    before_action :authentication_required
     before_action :find_user, only: [:new, :edit]
 
     def new
@@ -16,7 +17,7 @@ class TripsController < ApplicationController
         @trip = @user.trips.build(trip_params)
         if @trip.valid?
             @trip.save
-            
+
             @trip.users_trips.first.update(trip_admin: true)
 
             redirect_to user_trip_path(@user, @trip)
