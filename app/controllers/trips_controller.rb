@@ -1,9 +1,9 @@
 class TripsController < ApplicationController
     before_action :authentication_required
-    before_action :find_user, only: [:new, :edit]
+    before_action :find_user, only: [:new, :edit, :show]
 
     def new
-        if @user.id == session[:user_id] && @user
+        if @user
             @trip = Trip.new
         else
             flash[:errors] = "Cannot create a trip for an invalid user."
@@ -50,9 +50,14 @@ class TripsController < ApplicationController
     end
 
     def show
-        #Must validate trip.users includes current_user
-        #Must validate current_user.id == params[:user_id]
         @trip = Trip.find(params[:id])
+        if @trip.users.include?(@user)
+            render :show
+        else
+            flash[:errors] = "Cannot view another user's trips."
+
+            redirect_to :root
+        end
     end
 
     private

@@ -19,6 +19,8 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find(params[:id])
+        @planned_trips = Trip.planned_trips(@user)
+        @invited_trips = Trip.invited_trips(@user)
     end
 
     private
