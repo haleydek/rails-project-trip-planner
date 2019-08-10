@@ -3,7 +3,17 @@ require 'bundler/setup'
 require 'open-uri'
 require './scraper'
 
-scrape = Scraper.get_country
+# @global_regions = Scraper.scrape_global_region
+
+# @regions_and_countries = Scraper.get_country(global_regions)
+
+# @countries = Scraper.scrape_country_url
+global_regions = Scraper.scrape_global_region
+regions_and_countries = Scraper.get_country(global_regions)
+countries = Scraper.scrape_country_url
+#regions_countries_states = Scraper.scrape_country_page(regions_and_countries)
+
+Scraper.get_country_doc(global_regions)
 
 binding.pry
 
