@@ -6,11 +6,6 @@ require 'open-uri'
 class Scraper
     BASEPATH = 'https://www.atlasobscura.com/destinations'
 
-    # global_regions = self.scrape_global_region
-    # regions_and_countries = self.get_country(global_regions)
-    # countries = self.scrape_country_url
-    # regions_countries_states = self.scrape_country_page(countries, regions_and_countries)
-
     def self.scrape_page
         Nokogiri::XML(open(BASEPATH))
     end
@@ -19,13 +14,13 @@ class Scraper
         self.scrape_page.xpath('//div/div[2]/section/ul/li/div/h2/text()')
     end
         
-    #global_regions variable
+    #destinatinos variable
     def self.scrape_global_region
         global_region = {}
-        self.get_global_region.each do |xml|
-            text = xml.inner_text.strip!
-            if text != ""
-                global_region[text] = {}
+        self.get_global_region.each do |region|
+            region_name = region.inner_text.strip!
+            if region_name != ""
+                global_region[region_name] = {}
                 # global_region = {
                     # region: { }
                 # }
@@ -33,8 +28,6 @@ class Scraper
         end
         global_region
     end
-
-    global_regions = self.scrape_global_region
 
     def self.global_region_formatted
         global_regions_formatted = []
@@ -45,146 +38,113 @@ class Scraper
         global_regions_formatted
     end
 
-    #regions_and_countries variable
-    def self.get_country(global_regions)
-        self.global_region_formatted.each_with_index do |region_formatted, index|
-            self.scrape_page.xpath('//*[@id="' + region_formatted + '"]/div/div/div/a/text()').each do |country|
-                # .keys returns array of all keys. Gives us access to index.
-                region_keys = global_regions.keys
-                # Add country to correct region (key) in DESTINATIONS hash
-                global_regions[region_keys[index]][country.inner_text] = {city: []}
-            end
-        end
-        global_regions
+    def self.format_global_region(region)
+        region.downcase.gsub(" ", "-").concat("-children")
     end
 
-    # countries variable
-    def self.scrape_country_url
-        countries = {}
-        self.global_region_formatted.each_with_index do |region_formatted, index|
-            self.scrape_page.xpath('//*[@id="' + region_formatted + '"]/div/div/div/a').each do |a|
-                country_url = 'https://www.atlasobscura.com' + a.attr('href')
-                country_name = a.text
-                countries[country_name] = country_url
-            end
-        end
-        countries
-    end
+    def self.scrape_country
+        destinations = self.scrape_global_region
+        self.scrape_global_region.each do |region, country_hash|
+            # formatted region name in order to scrape countries
+            formatted_region = self.format_global_region(region)
+            #scrape each country using formatted_region name
+            self.scrape_page.xpath('//*[@id="' + formatted_region + '"]/div/div/div/a').each do |country|
+                country_url = 'https://www.atlasobscura.com' + country.attr('href')
+                country_name = country.text
 
-    def get_states_or_cities
-        self.xpath('//*[@id="geo-child-drawer"]/div/div[3]/div/div/div[contains(@class,"geo-dropdown-item")]/a')
-    end
+                destinations[region][country_name] = {}
 
-    # country_docs variable
-    def self.get_country_doc(global_regions)
-        countries_and_states = {}
-        self.scrape_country_url.each do |country_name, url|
+                country_page = Nokogiri::XML(open(country_url))
 
-            countries_and_states[country_name] = {}
+                states_or_cities = country_page.xpath('//*[@id="geo-child-drawer"]/div/div[3]/div/div/div[contains(@class,"geo-dropdown-item")]/a')
 
-            doc = Nokogiri::XML(open(url))
-
-            states_or_cities = doc.xpath('//*[@id="geo-child-drawer"]/div/div[3]/div/div/div[contains(@class,"geo-dropdown-item")]/a')
-
-            if states_or_cities
+                if states_or_cities.text
             
-                type = doc.xpath('//*[@id="geo-dropdown-toggle"]/span').text.strip!
+                    type = country_page.xpath('//*[@id="geo-dropdown-toggle"]/span').text.strip!
 
-                if type && type.include?("Cities")
-                    countries_and_states[country_name]["city"] = []
-                    states_or_cities.each do |a|
-                        city_name = a.text
+                    if type && type.include?("Cities")
+                        destinations[region][country_name]["city"] = []
+                        states_or_cities.each do |a|
+                            city_name = a.text
 
-                        countries_and_states[country_name]["city"] << city_name
+                            destinations[region][country_name]["city"] << city_name
+                        end
+
+                    elsif type && type.include?("Territories")
+                        destinations[region][country_name]["state"] = {}
+                        states_or_cities.each do |a|
+                            state_name = a.text
+                            state_url = 'https://www.atlasobscura.com' + a.attr('href')
+
+                            destinations[region][country_name]["state"][state_name] = []
+
+                            state_doc = Nokogiri::XML(open(state_url))
+
+                            cities = state_doc.xpath('//*[@id="geo-child-drawer"]/div/div[3]/div/div/div[contains(@class,"geo-dropdown-item")]/a')
+
+                            cities.each do |city|
+                                city_name = city.text
+
+                                destinations[region][country_name]["state"][state_name] << city_name
+                            end
+                        end
+
                     end
-
-                elsif type && type.include?("Territories")
-                    states_or_cities.each do |a|
-                        state_name = a.text
-                        state_url = 'https://www.atlasobscura.com' + a.attr('href')
-
-                        countries_and_states[country_name][state_name] = []
-                    end
-
                 end
 
             end
-
         end
-        countries_and_states
+        destinations
     end
 
-    # def self.scrape_country_page(global_regions)
-    #     self.get_country_page(global_regions).each do |a|
-    #         if page_type.text.include?("States, Territories")
-    #             cities_or_states.each do |a|
-    #                 state_name = a.text
-    #                 state_url = 'https://www.atlasobscura.com' + a.attr('href')
-    #                 self.get_country(global_regions).each do |region_key, hash_of_countries|
-    #                     hash_of_countries.each do |country_key, hash|
-    #                         hash[state_name] = [] if country_key == country_name
-    #                     end
-    #                 end
-    #                 states[state_name] = state_url
-    #             end
-    #         elsif page_type.text.include?("Cities")
-    #             cities_or_states.each do |a|
-    #                 city_name = a.text
-    #                 self.get_country(global_regions).each do |region_key, hash_of_countries|
-    #                     hash_of_countries.each do |country_key, hash|
-    #                         if country_key == country_name
-    #                             hash[:city] << city_name
-    #                         end
-    #                     end
-    #                 end
-    #             end
-    #         end
-    #     end
-    #     states
-    # end
-
-    # region = {
+    # destionations = {
     #     North_America: {
     #         United_States: {
-                    # Ohio: [
-
-                    #     ]
-                    # city: [
-
-                    # ]
-    #             Ohio: [
-    #                 Columbus,
-    #                 Dayton,
-    #                 Cincinnatti
-    #             ],
-    #             Minnesota: [
-    #                 Minneapolis,
-    #                 Saint Paul,
-    #                 Rochester
-    #             ]
-    #         },
-    #         Canada: {
-    #             British_Columbia: [
-    #                 Vancouver
-    #             ]
+                    # state: {
+                    #     Ohio: [
+                    #         Columbus
+                    #     ],
+                    # },
+            #  France: {
+            #         city: [
+            #              Paris,
+            #              Normandy
+            #          ]
+            #      }
     #         }
     #     }
     # }
 
-    # region_hash.each do |region, country_hash|
-    #     region.each do |country, state_hash|
-    #         country.each do |state, city_array|
-    #             state.each do |city|
-    #                 Destination.create!(city: city, state: state, country: country, region: region)
+    # destinations.each do |region, region_hash|
+    #     region.each do |country, country_hash|
+    #         if country_hash.empty?
+    #             Destiantion.create!(region: region, country: country)
+    #         else
+    #             country.each do |state_or_city, hash_or_array|
+    #                 if state_or_city == "state"
+    #                     hash_or_array.each do |state, city_array|
+    #                         if !city_array.empty?
+    #                             city_array.each do |city|
+    #                                 Destination.create!(region: region, country: country, state: state, city: city)
+    #                             end
+    #                         else
+    #                             Destiantion.create!(region: region, country: country, state: state)
+    #                         end
+    #                     end
+    #                 elsif state_or_city == "city"
+    #                     if !hash_or_array.empty?
+    #                         hash_or_array.each do |city|
+    #                             Destination.create!(region: region, country: country, city: city)
+    #                         end
+    #                     else
+    #                         Destination.create!(region: region, country: country)
+    #                     end
+    #                 else
+    #                     Destination.create!(region: region, country: country)
+    #                 end
     #             end
     #         end
     #     end
     # end
-
-    # //*[@id="geo-child-drawer"]/div/div[3]/div/h6
-    # if h6/text() contains "Territories"
-        # Ohio: []
-    # else
-        # city: []
 
 end
