@@ -1,6 +1,6 @@
-<%= form_for [:user, @trip] do |f| %>
-    <%= fields_for :users_trips, trip.users_trips.build do |users_trip_fields| %>
-        <%= users_trip_fields.check_box :trip_admin, value: :users_trip_id %>
+<%= form_for [@user, @trip], url: user_trips_path, method: "patch" do |f| %>
+    <%= fields_for :users_trips do |users_trip_fields| %>
+        <%= users_trip_fields.check_box :users_trip_ids, value: :trip_admin %>
         <%= users_trip_fields.label "Permission to edit trip?" %>
     <% end %>
     

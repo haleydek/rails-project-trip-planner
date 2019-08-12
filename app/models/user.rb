@@ -21,4 +21,16 @@ class User < ApplicationRecord
             user.save!
         end
     end
+
+    def admin_status(trip)
+        self.users_trips.where(user_id: self.id, trip_id: trip.id).first.trip_admin
+    end
+
+    def update_user_trip_admin(current_user, trip)
+        current_user_admin_status = current_user.admin_status(trip)
+        if !!current_user_admin_status
+            self.users_trips.where(user_id: self.id, trip_id: trip.id).first.update_attribute :trip_admin, !self.admin_status(trip)
+        end
+    end
+
 end

@@ -1,6 +1,6 @@
 class TripsController < ApplicationController
     before_action :authentication_required
-    before_action :find_user, only: [:new, :edit, :show, :index]
+    before_action :find_user, only: [:new, :edit, :update, :show, :index]
     before_action :find_trip, only: [:edit, :update, :show, :destroy]
 
     def new
@@ -41,16 +41,23 @@ class TripsController < ApplicationController
     end
 
     def update
-        #update does not change trip_admin value in users_trips table
-        if @trip.update(trip_params)
+        if @trip.current_user_is_trip_admin?(current_user)
+            # #update_user_trip_admin checks if current_user is admin of @trip before updating the @user's admin status.
+            @user.update_user_trip_admin(current_user, @trip)
+
             redirect_to user_trip_path(current_user, @trip)
         else
-            render :edit
+            if @trip.update(trip_params)
+                # @trip.update does not change trip_admin value in users_trips table
+                redirect_to user_trip_path(current_user, @trip)
+            else
+                render :edit
+            end
         end
     end
 
     def destroy
-        if @trip.current_user_is_trip_admin?(@user)
+        if @trip.current_user_is_trip_admin?(current_user)
             @trip.destroy
 
             flash[:success] = "Trip was successfully deleted."
@@ -81,7 +88,7 @@ class TripsController < ApplicationController
     private
 
     def trip_params
-        params.require(:trip).permit(:title, :start_date, :end_date, user_ids:[], destination_ids: [])
+        params.permit(:title, :start_date, :end_date, user_ids:[], destination_ids: [])
     end
 
     def find_user

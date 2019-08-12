@@ -23,8 +23,8 @@
     <strong>You invited: </strong>
     <% if @trip.users.all_except(current_user).present? %>
         <ul>
-            <% @trip.users.all_except(current_user).each do |invited_user| %>
-                <li><%= invited_user.name %> - <%= mail_to invited_user.email %> <%= render partial: "trip_admin_form", locals: { user: invited_user, trip: @trip } %>
+            <% @trip.users.all_except(current_user).each do |user| %>
+                <li><%= user.name %> - Admin: <%= user.admin_status(@trip) %> <%= link_to "Allow user to edit trip", user_trip_path(user, @trip), method: "patch" %>
             <% end %>
         </ul>
     <% else %>
