@@ -1,6 +1,6 @@
 class TripsController < ApplicationController
     before_action :authentication_required
-    before_action :find_user, only: [:new, :edit, :show]
+    before_action :find_user, only: [:new, :edit, :show, :index]
     before_action :find_trip, only: [:edit, :update, :show, :destroy]
 
     def new
@@ -9,12 +9,11 @@ class TripsController < ApplicationController
         else
             flash[:errors] = "Cannot create a trip for an invalid user."
 
-            redirect_to :root
+            redirect_to user_trips_path(current_user)
         end
     end
 
     def create
-        byebug
         @user = User.find(trip_params[:user_ids].first)
         @trip = @user.trips.build(trip_params)
         
@@ -56,7 +55,7 @@ class TripsController < ApplicationController
 
             flash[:notice] = "Trip was successfully deleted."
 
-            redirect_to user_path(current_user)
+            redirect_to user_trips_path(@user)
         else
             flash[:errors] = "You do not have permissin to delete this trip."
 
@@ -65,6 +64,8 @@ class TripsController < ApplicationController
     end
 
     def index
+        @planned_trips = Trip.planned_trips(@user)
+        @invited_trips = Trip.invited_trips(@user)
     end
 
     def show
@@ -73,7 +74,7 @@ class TripsController < ApplicationController
         else
             flash[:errors] = "Cannot view another user's trips."
 
-            redirect_to :root
+            redirect_to user_trips_path(@user)
         end
     end
 

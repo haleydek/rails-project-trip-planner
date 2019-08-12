@@ -1,28 +1,7 @@
 <h1><%= @user.name %></h1>
 
-<%= flash[:notice] if flash[:notice].present? %>
-<%= flash[:errors] if flash[:errors].present? %>
+<p><%= @user.email %></p>
 
-<%= link_to "Plan a new trip", new_user_trip_path(@user) %><br><br>
-
-<h3>Trips I am planning:</h3>
-<% if @planned_trips.blank? %>
-    <p>No trips planned yet</p>
-<% else %>
-    <ul>
-        <% @planned_trips.each do |trip| %>
-            <li><%= link_to trip.title, user_trip_path(@user, trip) %></li><br>
-        <% end %>
-    </ul>
-<% end %>
-
-<h3>Trips I am invited to:</h3>
-<% if @invited_trips.blank? %>
-    <p>No trip invitations yet</p>
-<% else %>
-    <ul>
-        <% @invited_trips.each do |trip| %>
-            <li><%= link_to trip.title, user_trip_path(@user, trip) %></li><br>
-        <% end %>
-    </ul>
+<% if @user.image.present? %>
+    <img src="<%= @user.image %>" width="100" height="100">
 <% end %>

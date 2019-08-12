@@ -4,10 +4,10 @@ class SessionsController < ApplicationController
 
     def create
         if auth
-            @user = User.find_or_create_from_auth_hash(auth)
-            session[:user_id] = @user.id
+            user = User.find_or_create_from_auth_hash(auth)
+            session[:user_id] = user.id
 
-            redirect_to :root
+            redirect_to user_trips_path(user)
         else
             user = User.find_by(email: params[:email])
             
@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
                 log_in(user)
 
 
-                redirect_to :root
+                redirect_to user_trips_path(user)
             else
                 flash[:errors] = "Invalid email and/or password."
                 

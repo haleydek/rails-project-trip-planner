@@ -1,5 +1,9 @@
 class WelcomeController < ApplicationController
     def home
-        @user = current_user
+        if current_user
+            redirect_to user_trips_path(current_user)
+        else
+            render :home
+        end
     end
 end

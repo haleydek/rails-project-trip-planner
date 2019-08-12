@@ -1,18 +1,7 @@
-<% if session[:user_id] %>
-    <h1><%= @user.name %></h1>
-    <p><%= @user.email %></p>
-    <% if @user.image.present? %>
-        <img src="<%= @user.image %>" width="100" height="100">
-    <% end %>
+<h1>Group Trip Planner</h1>
 
-    <br><br>
+<%= link_to("Log In with Facebook", '/auth/facebook', method: :post) %><br>
+<%= link_to "Log In", '/login' %></br>
+<%= link_to "Sign Up", '/signup' %><br><br>
 
-    <%= link_to "Log Out", logout_path, method: "delete" %>
-<% else %>
-    <h1>Group Trip Planner</h1>
-    <%= link_to("Log In with Facebook", '/auth/facebook', method: :post) %>
-    
-    <br><br>
-    
-    <%= flash[:success] if flash[:success].present? %>
-<% end %>
+<%= flash[:success] if flash[:success].present? %>

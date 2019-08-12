@@ -12,6 +12,6 @@ class ApplicationController < ActionController::Base
     end
 
     def authentication_required
-        redirect_to signup_path unless session.include? :user_id
+        redirect_to root_path unless session.include? :user_id
     end
 end
