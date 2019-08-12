@@ -1,8 +1,7 @@
 <h1><%= @user.name %></h1>
-
-<%= flash[:notice] if flash[:notice].present? %>
-<%= flash[:errors] if flash[:errors].present? %>
-
+<% if flash[:success].present? %><div class="alert alert-success" role="alert"><%= flash[:success] %></div><% end %>
+<% if flash[:errors].present? %><div class="alert alert-danger" role="alert"><%= flash[:errors] %></div><% end %>
+<br>
 <%= link_to "Plan a new trip", new_user_trip_path(@user) %><br><br>
 
 <h3>Trips I am planning:</h3>

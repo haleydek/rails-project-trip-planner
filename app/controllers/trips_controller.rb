@@ -53,7 +53,7 @@ class TripsController < ApplicationController
         if @trip.current_user_is_trip_admin?(@user)
             @trip.destroy
 
-            flash[:notice] = "Trip was successfully deleted."
+            flash[:success] = "Trip was successfully deleted."
 
             redirect_to user_trips_path(@user)
         else
