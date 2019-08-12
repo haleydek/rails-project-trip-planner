@@ -1,41 +1,39 @@
-<div class="form-control">
+
     <%= form_for [@user, @trip] do |f| %>
         <% if @trip.errors.any? %>
             <div id="error_explanation" class="alert alert-danger" role="alert">
                 <%= @trip.errors.full_messages.join(". ") %>
             </div>
         <% end %>
+            <div class="form-group field<%= ' field_with_errors' if @trip.errors[:title].any? %>">
+                <%= f.label :title %>
+                <%= f.text_field :title, { class: "form-control col-sm-2 my-1" } %>
+            </div><br>
 
-        <div class="field<%= ' field_with_errors' if @trip.errors[:title].any? %>">
-            <%= f.label :title %>
-            <%= f.text_field :title %>
-        </div><br><br>
+            <div class="form-group field<%= ' field_with_errors' if @trip.errors[:start_date].any? %>">
+                <%= f.label :start_date %>
+                <%= f.date_field :start_date, { class: "form-control col-sm-2 my-1" } %>
+            </div><br><br>
 
-        <div class="field<%= ' field_with_errors' if @trip.errors[:start_date].any? %>">
-            <%= f.label :start_date %>
-            <%= f.date_field :start_date %>
-        </div><br><br>
+            <div class="form-group field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
+                <%= f.label :end_date %>
+                <%= f.date_field :end_date, { class: "form-control col-sm-2 my-1" } %>
+            </div><br><br>
 
-        <div class="field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
-            <%= f.label :end_date %>
-            <%= f.date_field :end_date %>
-        </div><br><br>
+            <div class="field">
+                <%= f.hidden_field :user_ids, value: @user.id, multiple: true %>
+            </div>
 
-        <div class="field">
-            <%= f.hidden_field :user_ids, value: @user.id, multiple: true %>
-        </div>
+            <div class="form-group field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
+                <%= f.label :user_ids, "Invite Friends!" %><br>
+                <%= f.collection_select :user_ids, User.all_except(current_user), :id, :name, { include_blank: true }, { multiple: true, class: "form-control col-sm-2 my-1 custom-select" } %><br><br>
+            </div>
 
-        <div class="field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
-            <%= f.label :user_ids, "Invite Friends!" %>
-            <%= f.collection_select :user_ids, User.all_except(current_user), :id, :name, { include_blank: true }, { multiple: true, class: "custom-select" } %><br><br>
-        </div>
-
-        <div class="field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
-            <%= f.label :destination_ids, "Destinations" %><br>
-            <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true } %>
-            <small class="form-text text-muted">You may select multiple destinations.</small><br><br>
-        </div>
+            <div class="form-group field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
+                <%= f.label :destination_ids, "Destinations" %><br>
+                <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true, class: "form-control col-sm-2 my-1 custom-select" } %>
+                <small class="form-text text-muted">You may select multiple destinations.</small><br>
+            </div>
 
         <%= f.submit %>
     <% end %>
-</div>
