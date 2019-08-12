@@ -1,24 +1,17 @@
-# README
+# rails-project-trip-planner
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Description
+Plan a trip with friends and family using this trip planner app
 
-Things you may want to cover:
+## Install Instructions
+1. Clone this repo via `git clone`
+2. Run `bundle install`
+3. Run `rails s` to run the app on the rails server
+4. Copy and paste the server address into a web browser to view and interact with the app
+5. To stop running the app on your server, enter CTRL-C in your terminal
 
-* Ruby version
+## Contributors Guide
+Please fork this repo to add your own features, styling, etc. to the app.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## License
+[MIT License for this project](./LICENSE)
