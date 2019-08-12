@@ -26,6 +26,15 @@
         <%= f.label :user_ids, "Invite Friends!" %>
         <%= f.collection_select :user_ids, User.all_except(current_user), :id, :name, { include_blank: true }, { multiple: true, class: "custom-select" } %><br><br>
 
+        <%= f.label :destination_ids, "Destination 1" %>
+        <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true } %><br><br>
+
+        <%= f.label :destination_ids, "Destination 2" %>
+        <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true } %><br><br>
+
+        <%= f.label :destination_ids, "Destination 3" %>
+        <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true } %><br><br>
+
         <%= f.submit %>
     <% end %>
 </div>

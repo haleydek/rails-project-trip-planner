@@ -16,6 +16,7 @@ class TripsController < ApplicationController
     def create
         @user = User.find(trip_params[:user_ids].first)
         @trip = @user.trips.build(trip_params)
+        @trip.destinations.build(trip_params)
         if @trip.valid?
             @trip.save
 
@@ -70,7 +71,7 @@ class TripsController < ApplicationController
     private
 
     def trip_params
-        params.require(:trip).permit(:title, :start_date, :end_date, user_ids:[], users_attributes: [:name])
+        params.require(:trip).permit(:title, :start_date, :end_date, user_ids:[], users_attributes: [:name], destination_ids: [])
     end
 
     def find_user
