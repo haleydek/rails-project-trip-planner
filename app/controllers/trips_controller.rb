@@ -88,7 +88,7 @@ class TripsController < ApplicationController
     private
 
     def trip_params
-        params.permit(:title, :start_date, :end_date, user_ids:[], destination_ids: [])
+        params.require(:trip).permit(:title, :start_date, :end_date, user_ids:[], destination_ids: [])
     end
 
     def find_user
