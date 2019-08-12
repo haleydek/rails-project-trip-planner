@@ -21,5 +21,7 @@ Rails.application.routes.draw do
 
   delete '/logout', to: 'sessions#destroy'
 
+  get '/destinations/most_popular', to: 'destinations#show'
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

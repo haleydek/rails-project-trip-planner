@@ -9,16 +9,11 @@ class Destination < ApplicationRecord
         where("country LIKE ? OR state LIKE ? OR city LIKE ?", search, search, search)
     end
 
-    def self.group_by_region
-        group(:region)
-    end
-
-    def self.group_by_country
-        group(:country)
-    end
-
     def format_location
         [self.country, self.state, self.city].reject{ |s| s.blank? }.join(", ")
     end
 
+    def self.most_popular
+        all.max_by { |destination| destination.trips.length }
+    end
 end
