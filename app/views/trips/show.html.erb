@@ -11,7 +11,7 @@
 </div>
 
 <div>
-    <strong>Destination(s): </strong><br>
+    <strong>Destinations: </strong><br>
     <ul>
         <% @trip.destinations.each do |destination| %>
             <li><%= [destination.city, destination.state, destination.country].reject{ |s| s.blank? }.join(", ")  %></li>
