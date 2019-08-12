@@ -21,14 +21,20 @@
             <%= f.date_field :end_date %>
         </div><br><br>
 
-        <%= f.hidden_field :user_ids, value: @user.id, multiple: true %>
+        <div class="field">
+            <%= f.hidden_field :user_ids, value: @user.id, multiple: true %>
+        </div>
 
-        <%= f.label :user_ids, "Invite Friends!" %>
-        <%= f.collection_select :user_ids, User.all_except(current_user), :id, :name, { include_blank: true }, { multiple: true, class: "custom-select" } %><br><br>
+        <div class="field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
+            <%= f.label :user_ids, "Invite Friends!" %>
+            <%= f.collection_select :user_ids, User.all_except(current_user), :id, :name, { include_blank: true }, { multiple: true, class: "custom-select" } %><br><br>
+        </div>
 
-        <%= f.label :destination_ids, "Destinations" %><br>
-        <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true } %>
-        <small class="form-text text-muted">You may select multiple destinations.</small><br><br>
+        <div class="field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
+            <%= f.label :destination_ids, "Destinations" %><br>
+            <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true } %>
+            <small class="form-text text-muted">You may select multiple destinations.</small><br><br>
+        </div>
 
         <%= f.submit %>
     <% end %>
