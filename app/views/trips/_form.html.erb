@@ -7,7 +7,7 @@
         <% end %>
             <div class="form-group field<%= ' field_with_errors' if @trip.errors[:title].any? %>">
                 <%= f.label :title %>
-                <%= f.text_field :title, { class: "form-control col-sm-2 my-1" } %>
+                <%= f.text_field :title, { class: "form-control col-sm-3 my-1" } %>
             </div><br>
 
             <div class="form-group field<%= ' field_with_errors' if @trip.errors[:start_date].any? %>">
@@ -26,12 +26,12 @@
 
             <div class="form-group field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
                 <%= f.label :user_ids, "Invite Friends!" %><br>
-                <%= f.collection_select :user_ids, User.all_except(current_user), :id, :name, { include_blank: true }, { multiple: true, class: "form-control col-sm-2 my-1 custom-select" } %><br><br>
+                <%= f.collection_select :user_ids, User.all_except(current_user), :id, :name, { include_blank: true }, { multiple: true, class: "form-control col-sm-3 my-1 custom-select" } %><br><br>
             </div>
 
             <div class="form-group field<%= ' field_with_errors' if @trip.errors[:end_date].any? %>">
                 <%= f.label :destination_ids, "Destinations" %><br>
-                <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true, class: "form-control col-sm-2 my-1 custom-select" } %>
+                <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true, class: "form-control col-sm-5 my-1 custom-select" } %>
                 <small class="form-text text-muted">You may select multiple destinations.</small><br>
             </div>
 

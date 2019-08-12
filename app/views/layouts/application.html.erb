@@ -12,7 +12,10 @@
   <body>
     <%= render "layouts/header" if current_user %>
 
-    <%= yield %>
+    <div class="container mt-4">
 
+      <%= yield %>
+
+    </div>
   </body>
 </html>
