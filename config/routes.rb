@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :trips
   end
 
-  resources :destinations, only: [:index, :show]
+  resources :destinations, only: [:index]
 
   resources :users, only: [:show, :index]
 
