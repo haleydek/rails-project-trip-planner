@@ -6,8 +6,10 @@ class Trip < ApplicationRecord
     has_many :destinations, through: :trips_destinations
 
     validates :title, presence: true
+    validates :start_date, presence: true
+    validates :end_date, presence: true
 
-    accepts_nested_attributes_for :users_trips
+    accepts_nested_attributes_for :users_trips, :destinations
 
     def self.planned_trips(user)
         self.where(id: (UsersTrip.where(user_id: user.id, trip_admin: true)).pluck(:trip_id))

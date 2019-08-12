@@ -1,5 +1,5 @@
 <div class="form-control">
-    <%= form_for [:user, @trip] do |f| %>
+    <%= form_with model: trip, url: user_trips_path(@user, @trip) do |f| %>
         <% if @trip.errors.any? %>
             <div id="error_explanation" class="alert alert-danger" role="alert">
                 <%= @trip.errors.full_messages.join(". ") %>
@@ -26,14 +26,9 @@
         <%= f.label :user_ids, "Invite Friends!" %>
         <%= f.collection_select :user_ids, User.all_except(current_user), :id, :name, { include_blank: true }, { multiple: true, class: "custom-select" } %><br><br>
 
-        <%= f.label :destination_ids, "Destination 1" %>
-        <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true } %><br><br>
-
-        <%= f.label :destination_ids, "Destination 2" %>
-        <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true } %><br><br>
-
-        <%= f.label :destination_ids, "Destination 3" %>
-        <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true } %><br><br>
+        <%= f.label :destination_ids, "Destinations" %><br>
+        <%= f.collection_select :destination_ids, Destination.all, :id, :format_location, { include_blank: true }, { multiple: true } %>
+        <small class="form-text text-muted">You may select multiple destinations.</small><br><br>
 
         <%= f.submit %>
     <% end %>

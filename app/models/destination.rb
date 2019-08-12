@@ -4,14 +4,6 @@ class Destination < ApplicationRecord
 
     validates :region, presence: true
     validates :country, presence: true
-    
-    # def self.filter_regions(region)
-    #     where(region: region)
-    # end
-
-    # def self.unique_regions
-    #     self.pluck(:region).uniq
-    # end
 
     def self.search(search)
         where("country LIKE ? OR state LIKE ? OR city LIKE ?", search, search, search)

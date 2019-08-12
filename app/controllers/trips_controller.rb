@@ -5,7 +5,7 @@ class TripsController < ApplicationController
 
     def new
         if @user
-            @trip = Trip.new
+            @trip = @user.trips.build
         else
             flash[:errors] = "Cannot create a trip for an invalid user."
 
@@ -14,13 +14,16 @@ class TripsController < ApplicationController
     end
 
     def create
+        byebug
         @user = User.find(trip_params[:user_ids].first)
         @trip = @user.trips.build(trip_params)
-        @trip.destinations.build(trip_params)
+        
         if @trip.valid?
             @trip.save
 
             @trip.users_trips.first.update(trip_admin: true)
+
+            @trip.destination_ids=(trip_params[:destination_ids])
 
             redirect_to user_trip_path(@user, @trip)
         else
@@ -71,7 +74,7 @@ class TripsController < ApplicationController
     private
 
     def trip_params
-        params.require(:trip).permit(:title, :start_date, :end_date, user_ids:[], users_attributes: [:name], destination_ids: [])
+        params.require(:trip).permit(:title, :start_date, :end_date, user_ids:[], destination_ids: [])
     end
 
     def find_user

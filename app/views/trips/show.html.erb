@@ -6,16 +6,31 @@
     </div>
 <% end %>
 
-<p><strong>Dates: </strong><%= @trip.start_date_format %> - <%= @trip.end_date_format %></p><br><br>
+<div>
+    <strong>Dates: </strong><%= @trip.start_date_format %> - <%= @trip.end_date_format %><br><br>
+</div>
 
-<strong>You invited: </strong>
-<ul>
-    <% @trip.users.all_except(current_user).each do |invited_user| %>
-        <li><%= invited_user.name %> - <%= mail_to invited_user.email %> <%= render partial: "trip_admin_form", locals: { user: invited_user, trip: @trip } %>
-        
-        <%= link_to ""%></li>
+<div>
+    <strong>Destination(s): </strong><br>
+    <ul>
+        <% @trip.destinations.each do |destination| %>
+            <li><%= [destination.city, destination.state, destination.country].reject{ |s| s.blank? }.join(", ")  %></li>
+        <% end %>
+    </ul>
+</div>
+
+<div>
+    <strong>You invited: </strong>
+    <% if @trip.users.all_except(current_user).present? %>
+        <ul>
+            <% @trip.users.all_except(current_user).each do |invited_user| %>
+                <li><%= invited_user.name %> - <%= mail_to invited_user.email %> <%= render partial: "trip_admin_form", locals: { user: invited_user, trip: @trip } %>
+            <% end %>
+        </ul>
+    <% else %>
+            <p>Nobody, yet! Click 'Edit Trip' to invite friends.</p>  
     <% end %>
-</ul>
+</div>
 
 <%= link_to "Edit Trip", edit_user_trip_path(@user, @trip) if @trip.current_user_is_trip_admin?(@user) %><br><br>
 
