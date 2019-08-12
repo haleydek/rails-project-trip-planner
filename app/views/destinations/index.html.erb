@@ -1,10 +1,13 @@
 <h1>Destinations</h1>
 
-<%= link_to "Most Popular Destination", destinations_most_popular_path() %>
+<br>
+    <%= link_to "Most Popular Destination", destinations_most_popular_path() %>
+<br><br>
 
 <%= form_tag(destinations_path, method: "get") do %>
-    <strong><%= label_tag :search, "Search Destinations: " %></strong>
-    <%= text_field_tag :search %>
+    <div class="field form-group">
+        <%= text_field_tag :search, "", placeholder: "Search destinations", class: "form-control" %>
+    </div>
 
     <%= submit_tag "Search" %><br><br>
 <% end %>
