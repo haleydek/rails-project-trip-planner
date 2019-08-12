@@ -6,21 +6,21 @@
             <%= @user.errors.full_messages.join(". ")%>
         </div>
     <% end %>
-
-    <div class="field<%= ' field_with_errors' if @user.errors[:name].any? %>">
+<br>
+    <div class="form-group field<%= ' field_with_errors' if @user.errors[:name].any? %>">
         <%= f.label :name %>
-        <%= f.text_field :name %>
-    </div><br><br>
+        <%= f.text_field :name, { class: "form-control col-sm-2 my-1" } %>
+    </div><br>
 
-    <div class="field<%= ' field_with_errors' if @user.errors[:email].any? %>">
+    <div class="form-group field<%= ' field_with_errors' if @user.errors[:email].any? %>">
         <%= f.label :email %>
-        <%= f.text_field :email %>
-    </div><br><br>
+        <%= f.text_field :email, { class: "form-control col-sm-2 my-1" } %>
+    </div><br>
 
-    <div class="field<%= ' field_with_errors' if @user.errors[:password].any? %>">
+    <div class="form-group field<%= ' field_with_errors' if @user.errors[:password].any? %>">
         <%= f.label :password %>
-        <%= f.password_field :password %>
-    </div><br><br>
+        <%= f.password_field :password, { class: "form-control col-sm-2 my-1" } %>
+    </div><br>
 
     <%= f.submit "Create Account" %>
 <% end %>

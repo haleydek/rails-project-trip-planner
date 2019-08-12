@@ -6,16 +6,16 @@
             <%= flash[:errors] %>
         </div>
     <% end %>
-
-    <div class="field<%= ' field_with_errors' if flash[:errors].present? %>">
+<br>
+    <div class="form-group field<%= ' field_with_errors' if flash[:errors].present? %>">
         <%= label_tag :email %>
-        <%= text_field_tag :email %>
-    </div><br><br>
+        <%= text_field_tag :email, "", class: "form-control col-sm-2 my-1" %>
+    </div><br>
 
-    <div class="field<%= ' field_with_errors' if flash[:errors].present? %>">
+    <div class="form-group field<%= ' field_with_errors' if flash[:errors].present? %>">
         <%= label_tag :password %>
-        <%= password_field_tag :password %>
-    </div><br><br>
+        <%= password_field_tag :password, "", class: "form-control col-sm-2 my-1" %>
+    </div><br>
 
     <%= submit_tag "Log In" %>
 <% end %>
