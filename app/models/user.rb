@@ -7,6 +7,8 @@ class User < ApplicationRecord
 
     has_secure_password
 
+    scope :all_except, -> (user) { where.not(id: user.id) }
+
     def self.find_or_create_from_auth_hash(auth)
         # find the first record with a matching uid and update it via #tap
         # OR if no matching record exists, create a new one.
@@ -19,5 +21,4 @@ class User < ApplicationRecord
             user.save!
         end
     end
-    
 end

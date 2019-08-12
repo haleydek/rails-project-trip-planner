@@ -1,8 +1,21 @@
 <h1><%= @trip.title %></h1>
 
-<%= flash[:errors] if flash[:errors].present? %>
+<% if flash[:errors].present? %>
+    <div id="error_explanation" class="alert alert-danger" role="alert">
+        <%= flash[:errors] %>
+    </div>
+<% end %>
 
 <p><strong>Dates: </strong><%= @trip.start_date_format %> - <%= @trip.end_date_format %></p><br><br>
+
+<strong>You invited: </strong>
+<ul>
+    <% @trip.users.all_except(current_user).each do |invited_user| %>
+        <li><%= invited_user.name %> - <%= mail_to invited_user.email %> <%= render partial: "trip_admin_form", locals: { user: invited_user, trip: @trip } %>
+        
+        <%= link_to ""%></li>
+    <% end %>
+</ul>
 
 <%= link_to "Edit Trip", edit_user_trip_path(@user, @trip) if @trip.current_user_is_trip_admin?(@user) %><br><br>
 

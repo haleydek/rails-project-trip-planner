@@ -1,0 +1,14 @@
+<h1>Destinations</h1>
+
+<%= form_tag(destinations_path, method: "get") do %>
+    <strong><%= label_tag :search, "Search Destinations: " %></strong>
+    <%= text_field_tag :search %>
+
+    <%= submit_tag "Search" %><br><br>
+<% end %>
+
+    <ul>
+        <% @destinations.each do |destination| %>
+            <li><%= "#{destination.city} , " if destination.city %><%= "#{destination.state} , " if destination.state %><%= destination.country %>, <%= destination.region %></li>
+        <% end %>
+    </ul>

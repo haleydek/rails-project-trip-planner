@@ -1,0 +1,8 @@
+<%= form_for [:user, @trip] do |f| %>
+    <%= fields_for :users_trips, trip.users_trips.build do |users_trip_fields| %>
+        <%= users_trip_fields.check_box :trip_admin, value: :users_trip_id %>
+        <%= users_trip_fields.label "Permission to edit trip?" %>
+    <% end %>
+    
+    <%= f.submit "Update", { class: "btn btn-outline-primary btn-sm" } %>
+<% end %>
