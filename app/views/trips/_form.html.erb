@@ -1,5 +1,5 @@
 <div class="form-control">
-    <%= form_with model: trip, url: user_trips_path(@user, @trip) do |f| %>
+    <%= form_for [@user, @trip] do |f| %>
         <% if @trip.errors.any? %>
             <div id="error_explanation" class="alert alert-danger" role="alert">
                 <%= @trip.errors.full_messages.join(". ") %>
