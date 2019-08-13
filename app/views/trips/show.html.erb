@@ -20,7 +20,7 @@
 </div>
 
 <div>
-    <strong><%= current_user.admin_status(@trip) ? "You invited:" :  "People going on this trip:" %></strong>
+    <strong>People going on this trip:</strong>
     <% if @trip.users.all_except(current_user).present? %>
         <ul>
             <% @trip.users.all_except(current_user).each do |user| %>

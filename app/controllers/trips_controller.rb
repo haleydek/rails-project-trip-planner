@@ -50,16 +50,16 @@ class TripsController < ApplicationController
     end
 
     def destroy
-        if @trip.current_user_is_trip_admin?(current_user)
+        if current_user.admin_status(@trip)
             @trip.destroy
 
             flash[:success] = "Trip was successfully deleted."
 
-            redirect_to user_trips_path(@user)
+            redirect_to user_trips_path(current_user)
         else
             flash[:errors] = "You do not have permissin to delete this trip."
 
-            redirect_to user_trip_path(@user, @trip)
+            redirect_to user_trip_path(current_user, @trip)
         end
     end
 
