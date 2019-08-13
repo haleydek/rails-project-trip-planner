@@ -41,18 +41,11 @@ class TripsController < ApplicationController
     end
 
     def update
-        if @trip.current_user_is_trip_admin?(current_user)
-            # #update_user_trip_admin checks if current_user is admin of @trip before updating the @user's admin status.
-            @user.update_user_trip_admin(current_user, @trip)
-
+        if @trip.update(trip_params)
+            # @trip.update does not change trip_admin value in users_trips table
             redirect_to user_trip_path(current_user, @trip)
         else
-            if @trip.update(trip_params)
-                # @trip.update does not change trip_admin value in users_trips table
-                redirect_to user_trip_path(current_user, @trip)
-            else
-                render :edit
-            end
+            render :edit
         end
     end
 

@@ -20,18 +20,24 @@
 </div>
 
 <div>
-    <strong>You invited: </strong>
+    <strong><%= current_user.admin_status(@trip) ? "You invited:" :  "People going on this trip:" %></strong>
     <% if @trip.users.all_except(current_user).present? %>
         <ul>
             <% @trip.users.all_except(current_user).each do |user| %>
-                <li><%= user.name %> - Allowed to edit trip? <strong><%= user.admin_status(@trip) ? "Yes" : "No" %></strong> <%= link_to "Change permission", user_trip_path(user, @trip), method: "patch" %>
+                <% if current_user.admin_status(@trip) %>
+                    <li><%= user.name %> - Allowed to edit trip? <strong><%= user.admin_status(@trip) ? "Yes" : "No" %></strong> <%= link_to "Change permission", user_users_trip_path(user, @trip.users_trips.where(user_id: user.id).first.id), method: "patch" %>
+                <% else %>
+                    <li><%= user.name %></li>
+                <% end %>
             <% end %>
         </ul>
     <% else %>
-            <p>Nobody, yet! Click 'Edit Trip' to invite friends.</p>  
+            <p>Nobody, yet!</p>  
     <% end %>
 </div>
 
-<%= link_to "Edit Trip", edit_user_trip_path(@user, @trip) if @trip.current_user_is_trip_admin?(current_user) %><br><br>
+<% if current_user.admin_status(@trip) %>
+    <%= link_to "Edit Trip", edit_user_trip_path(@user, @trip) %><br><br>
 
-<%= link_to "Delete Trip", user_trip_path(@user, @trip), method: "delete" if @trip.current_user_is_trip_admin?(current_user) %>
+    <%= link_to "Delete Trip", user_trip_path(@user, @trip), method: "delete" %>
+<% end %>

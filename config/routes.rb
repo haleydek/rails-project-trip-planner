@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   resources :users do
     resources :trips
+    resources :users_trips, only: [:update]
   end
 
   resources :destinations, only: [:index]
