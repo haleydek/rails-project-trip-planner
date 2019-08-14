@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
     def create
         if auth
             user = User.find_or_create_from_auth_hash(auth)
-            session[:user_id] = user.id
+            log_in(user)
 
             redirect_to user_trips_path(user)
         else

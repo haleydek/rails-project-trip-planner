@@ -73,8 +73,8 @@ class TripsController < ApplicationController
     end
 
     def index
-        @planned_trips = Trip.planned_trips(@user)
-        @invited_trips = Trip.invited_trips(@user)
+        @planned_trips = @user.planned_trips
+        @invited_trips = @user.invited_trips
     end
 
     def show

@@ -33,4 +33,12 @@ class User < ApplicationRecord
         end
     end
 
+    def planned_trips
+        self.trips.where(id: (UsersTrip.where(user_id: self.id, trip_admin: true)).pluck(:trip_id))
+    end
+
+    def invited_trips
+        self.trips.where(id: (UsersTrip.where(user_id: self.id, trip_admin: false)).pluck(:trip_id))
+    end
+
 end

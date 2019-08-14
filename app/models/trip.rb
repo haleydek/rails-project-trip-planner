@@ -10,14 +10,6 @@ class Trip < ApplicationRecord
 
     accepts_nested_attributes_for :users_trips, :destinations
 
-    def self.planned_trips(user)
-        self.where(id: (UsersTrip.where(user_id: user.id, trip_admin: true)).pluck(:trip_id))
-    end
-
-    def self.invited_trips(user)
-        self.where(id: (UsersTrip.where(user_id: user.id, trip_admin: false)).pluck(:trip_id))
-    end
-
     def start_date_format
         self.start_date.strftime("%a, %B #{start_date.day.ordinalize}")
     end

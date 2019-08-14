@@ -25,7 +25,7 @@
         <ul>
             <% @trip.users.all_except(current_user).each do |user| %>
                 <% if current_user.admin_status(@trip) %>
-                    <li><%= user.name %> - Allowed to edit trip? <strong><%= user.admin_status(@trip) ? "Yes" : "No" %></strong> <%= link_to "Change permission", user_users_trip_path(user, @trip.find_users_trip_with_user(user), method: "patch" %>
+                    <li><%= user.name %> - Allowed to edit trip? <strong><%= user.admin_status(@trip) ? "Yes" : "No" %></strong> <%= link_to "Change permission", user_users_trip_path(user, @trip.find_users_trip_with_user(user)), method: "patch" %>
                 <% else %>
                     <li><%= user.name %></li>
                 <% end %>
