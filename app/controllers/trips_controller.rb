@@ -14,14 +14,21 @@ class TripsController < ApplicationController
     end
 
     def create
+        # The first user id in :user_ids array will be the current_user/trip creator
         @user = User.find(trip_params[:user_ids].first)
+
+        # Set up association between user and a new trip
         @trip = @user.trips.build(trip_params)
         
         if @trip.valid?
             @trip.save
 
+            # The first users_trip record that belongs to the new trip will also belong to
+            #   the current_user/trip creator.
+            #   Trip creator must be set as a trip_admin.
             @trip.users_trips.first.update(trip_admin: true)
 
+            # Set up association between the selected destinations and the new trip.
             @trip.destination_ids=(trip_params[:destination_ids])
 
             redirect_to user_trip_path(@user, @trip)
@@ -31,6 +38,7 @@ class TripsController < ApplicationController
     end
 
     def edit
+        # Current_user must be a trip_admin to edit the trip.
         if @trip.current_user_is_trip_admin?(@user)
             render :edit
         else
@@ -50,6 +58,7 @@ class TripsController < ApplicationController
     end
 
     def destroy
+        # Current_user must be a trip_admin to delete the trip.
         if current_user.admin_status(@trip)
             @trip.destroy
 
@@ -69,6 +78,7 @@ class TripsController < ApplicationController
     end
 
     def show
+        # Only users associated with the trip can view the trip.
         if @trip.users.include?(@user)
             render :show
         else
