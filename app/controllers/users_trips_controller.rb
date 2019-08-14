@@ -1,4 +1,6 @@
 class UsersTripsController < ApplicationController
+    before_action :authentication_required
+
     def update
         users_trip = UsersTrip.find(params[:id])
         trip = Trip.find_by(id: users_trip.trip_id)
