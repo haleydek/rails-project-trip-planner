@@ -6,7 +6,7 @@ Demo the app on [Heroku](https://rails-project-trip-planner.herokuapp.com/) or w
 
 ## Installation
 
-1. Fork and clone this repo
+1. Fork and clone this repo.
 
 2. cd into this repo and run `$ bundle install` in your terminal.
 
